@@ -1,0 +1,64 @@
+#include <iotgecko.h> 
+#define esp_baudrate 115200 // enter baud rate of your wifi module 
+// initialize the library with the esp8266(wifi module)  
+iotgecko gecko = iotgecko(esp_baudrate); 
+81 
+ 
+boolnotConected = true; 
+bool login = false; 
+String id = "Ykethansai@gmail.com" ; // iotgecko login id 
+String pass = "1617";  // iotgecko login password 
+String ssid = [WIFI_Name]; // SSID/name of your wifi router or wifi hotspot 
+String pass_key = [WIFI_Password]; //Wifi Password 
+constintno_of_containers = 4; // total number of containers to monitor 
+int container[no_of_containers]; 
+int sensor1_value = 0; 
+int sensor2_value = 0; 
+int sensor3_value = 0; 
+int sensor4_value = 0; 
+//int sensor5_value = 0; 
+//int sensor6_value = 0; 
+//int sensor7_value = 0; 
+//int sensor8_value = 0; 
+void setup() 
+{ 
+Serial.begin(115200); 
+Serial.println("iot liquid level monitoring"); 
+delay(2000); 
+82 
+ 
+Serial.println("conncecting to wifi"); 
+Serial.print(ssid); 
+Serial.print("\t"); 
+Serial.println(pass_key);   
+while(notConected) 
+  { 
+if(gecko.GeckoConnect(ssid,pass_key)) //connect to wifi with given SSID and password 
+    { 
+Serial.println("connceted to wifi..."); 
+notConected = false; 
+    } 
+else 
+    { 
+Serial.println("can't connect to wifi");  
+    } 
+delay(1000); 
+  } 
+Serial.println("connecting to iotgecko.com"); 
+while(!login) 
+  { 
+if(gecko.GeckoVerify(id,pass)) //login to iotgecko.com with given ID and password 
+83 
+ 
+    { 
+Serial.println("connected succesfully"); 
+login = true; 
+    } 
+else 
+    { 
+Serial.println("fail to connect"); 
+    } 
+  } 
+} 
+void loop() 
+{ 

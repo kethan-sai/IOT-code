@@ -1,0 +1,61 @@
+container[0] = sensor1_value; 
+container[1] = sensor2_value; 
+container[2] = sensor3_value; 
+container[3] = sensor4_value; 
+//  container[4] = sensor5_value; 
+//  container[5] = sensor6_value; 
+84 
+ 
+//  container[6] = sensor7_value; 
+//  container[7] = sensor8_value; 
+Serial.print("container 1 level is "); 
+Serial.println(container[0]); 
+Serial.print("container 2 level is "); 
+Serial.println(container[1]); 
+Serial.print("container 3 level is "); 
+Serial.println(container[2]); 
+Serial.print("container 4 level is "); 
+Serial.println(container[3]); 
+intiot_status = gecko.SendGParams(container,no_of_containers); //send data to iotgecko.com 
+if(iot_status == InvalidUserIdOrPassword) 
+  { 
+Serial.println("Invalid UserId or Password"); 
+while(1); 
+  } 
+else if(iot_status == InvalidData) 
+  { 
+Serial.println("Invalid Data"); 
+while(1); 
+  } 
+85 
+ 
+else if(iot_status == VALID) 
+  { 
+Serial.println("data send succesfully....:)"); 
+  } 
+else 
+  { 
+Serial.println("connection lost"); 
+while(!gecko.GeckoReconnect()) // reconnect to iotgecko.com  
+    { 
+Serial.println("conncetion failed.....reconnecting"); 
+delay(2000); 
+    } 
+Serial.println("connected succesfully"); 
+  } 
+sensor1_value++; 
+sensor2_value++; 
+sensor3_value++; 
+sensor4_value++; 
+//  sensor5_value++; 
+//  sensor6_value++; 
+//  sensor7_value++; 
+86 
+ 
+//  sensor8_value++; 
+if((sensor1_value>5) || (sensor2_value>5) || (sensor3_value>5) || (sensor4_value>5)) 
+  { 
+    sensor1_value = sensor2_value = sensor3_value = sensor4_value = 0; 
+  } 
+delay(1000);   
+}  
